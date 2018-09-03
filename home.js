@@ -1,16 +1,15 @@
 const go = (e) => {
   e.preventDefault();
 
-  // if it is a bang, go there
-  // else do duckduckgo query
-
   const bang = document.getElementById('bang');
 
   let url = '';
-
-  // Default to duckduckgo if not found
   let query = {};
-  query[bang.value] = `https://duckduckgo.com/?q=${bang.value}`
+
+  query[bang.value] = bang.value.includes('.') ?
+    `https://${bang.value}` :
+    `https://duckduckgo.com/?q=${bang.value}`;
+
   browser.storage.local.get(query)
     .then(item => (
       browser.tabs.update({
