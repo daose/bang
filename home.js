@@ -1,3 +1,11 @@
+const searchQuery = query => `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+const getDefaultBang = (value) => {
+  if (value.includes(' ')) return searchQuery(value);
+  if (value.startsWith('http')) return value;
+
+  if (value.includes('.')) return `https://${value}`;
+}
+
 const go = (e) => {
   e.preventDefault();
 
@@ -6,9 +14,7 @@ const go = (e) => {
   let url = '';
   let query = {};
 
-  query[bang.value] = bang.value.includes('.') ?
-    `https://${bang.value}` :
-    `https://duckduckgo.com/?q=${bang.value}`;
+  query[bang.value] = getDefaultBang(bang.value);
 
   browser.storage.local.get(query)
     .then(item => (
